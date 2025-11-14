@@ -4,16 +4,18 @@
 
 - Github secrets required
 
-| Secret                   | Usecase                                   | Format |
-| ------------------------ | ----------------------------------------- | ------ |
-| KC_ENVIRONMENT           | Keycloak environment name                 | string |
-| KC_REALM_ID              | Keycloak realm identifier                 | string |
-| KC_CLIENT_ID             | Client ID for general Keycloak access     | string |
-| KC_CLIENT_SECRET         | Client secret for general Keycloak access | string |
-| KC_BASIC_BCEID_CLIENT_ID | Client ID for BCEID Keycloak access       | string |
-| KC_BASIC_BCEID_SECRET    | Client secret for BCEID Keycloak access   | string |
-| KC_BCSC_CLIENT_ID        | Client ID for BCSC Keycloak access        | string |
-| KC_BCSC_SECRET           | Client secret for BCSC Keycloak access    | string |
+| Secret                      | Usecase                                   | Format |
+| --------------------------- | ----------------------------------------- | ------ |
+| KC_ENVIRONMENT              | Keycloak environment name                 | string |
+| KC_REALM_ID                 | Keycloak realm identifier                 | string |
+| KC_CLIENT_ID                | Client ID for general Keycloak access     | string |
+| KC_CLIENT_SECRET            | Client secret for general Keycloak access | string |
+| KC_BASIC_BCEID_CLIENT_ID    | Client ID for BCEID Keycloak access       | string |
+| KC_BASIC_BCEID_SECRET       | Client secret for BCEID Keycloak access   | string |
+| KC_BCSC_CLIENT_ID           | Client ID for BCSC Keycloak access        | string |
+| KC_BCSC_SECRET              | Client secret for BCSC Keycloak access    | string |
+| KC_BCEID_BUSINESS_CLIENT_ID | Client ID for BCSC Keycloak access        | string |
+| KC_BCEID_BUSINESS_SECRET    | Client secret for BCSC Keycloak access    | string |
 
 ## Tips
 
@@ -86,7 +88,9 @@ export KC_BASIC_BCEID_CLIENT_ID=<<STRING>>
 export KC_BASIC_BCEID_SECRET=<<STRING>>
 export KC_BCSC_CLIENT_ID=<<STRING>>
 export KC_BCSC_SECRET=<<STRING>>
+export KC_BCEID_BUSINESS_CLIENT_ID=<<STRING>>
+export KC_BCEID_BUSINESS_SECRET=<<STRING>>
 ```
 
-![alt text](image.png)
+![alt text](./images/play-debug.png)
 Click the play with bug icon and launch the script with the green play button. You will be able to set breakpoints in your code and change environment variables.
