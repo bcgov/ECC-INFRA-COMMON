@@ -70,7 +70,7 @@ function getBasicBCEIDIdentityProviderMap(
 }
 
 function getBasicBCEIDMappers() {
-  console.log("getting BCIED mappers");
+  console.log("getting BCEID basic mappers");
   return [
     {
       name: "display_name",

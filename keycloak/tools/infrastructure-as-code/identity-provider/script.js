@@ -6,6 +6,16 @@ import {
   getBCSCIdentityProviderMap,
   getBCSCMappers,
 } from "./mappers/IdentityProviderBCSCMapper.js";
+import {
+  getBCEIDBusinessIdentityProviderMap,
+  getBCEIDBusinessMappers,
+} from "./mappers/IdentityProviderBCEIDBusinessMapper.js";
+
+//constants for identity provider names we can adjust these to test creating new identity providers ex bceidbusiness -> bceidbusinesstesting
+//make sure to also change the alias constant in the mapper to match as well.
+const BCSC = "bcsc";
+const BCEID_BASIC = "bceidbasic";
+const BCEID_BUSINESS = "bceidbusiness";
 
 //************************ */
 // Helper Functions
@@ -20,6 +30,8 @@ function getAndValidateEnvVars() {
     KC_BASIC_BCEID_SECRET: process.env.KC_BASIC_BCEID_SECRET,
     BC_BCSC_CLIENT_ID: process.env.KC_BCSC_CLIENT_ID,
     KC_BCSC_SECRET: process.env.KC_BCSC_SECRET,
+    KC_BCEID_BUSINESS_CLIENT_ID: process.env.KC_BCEID_BUSINESS_CLIENT_ID,
+    KC_BCEID_BUSINESS_SECRET: process.env.KC_BCEID_BUSINESS_SECRET,
   };
 
   let valid = true;
@@ -88,7 +100,7 @@ const createIdentityProvider = async (
 ) => {
   console.log(`creating identity provider :: ${identityProviderName}`);
 
-  if (identityProviderName === "bceidbasic") {
+  if (identityProviderName === BCEID_BASIC) {
     await fetch(`${kcAdminUrl}/identity-provider/instances`, {
       method: "POST",
       headers: {
@@ -103,7 +115,7 @@ const createIdentityProvider = async (
         )
       ),
     });
-  } else if (identityProviderName === "bcsc") {
+  } else if (identityProviderName === BCSC) {
     await fetch(`${kcAdminUrl}/identity-provider/instances`, {
       method: "POST",
       headers: {
@@ -115,6 +127,21 @@ const createIdentityProvider = async (
           process.env.KC_ENVIRONMENT,
           process.env.KC_BCSC_CLIENT_ID,
           process.env.KC_BCSC_SECRET
+        )
+      ),
+    });
+  } else if (identityProviderName === BCEID_BUSINESS) {
+    await fetch(`${kcAdminUrl}/identity-provider/instances`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(
+        getBCEIDBusinessIdentityProviderMap(
+          process.env.KC_ENVIRONMENT,
+          process.env.KC_BCEID_BUSINESS_CLIENT_ID,
+          process.env.KC_BCEID_BUSINESS_SECRET
         )
       ),
     });
@@ -173,7 +200,7 @@ const createIdentityProviderWithMappers = async (
   kcAdminUrl,
   identityProviderName
 ) => {
-  if (!["bceidbasic", "bcsc"].includes(identityProviderName)) {
+  if (![BCEID_BASIC, BCSC, BCEID_BUSINESS].includes(identityProviderName)) {
     throw new Error(
       `Identity provider ${identityProviderName} is not supported.`
     );
@@ -192,10 +219,12 @@ const createIdentityProviderWithMappers = async (
 
   let identityProviderMappers = [];
 
-  if (identityProviderName === "bceidbasic") {
+  if (identityProviderName === BCEID_BASIC) {
     identityProviderMappers = getBasicBCEIDMappers();
-  } else if (identityProviderName === "bcsc") {
+  } else if (identityProviderName === BCSC) {
     identityProviderMappers = getBCSCMappers();
+  } else if (identityProviderName === BCEID_BUSINESS) {
+    identityProviderMappers = getBCEIDBusinessMappers();
   }
 
   await postIdentityProviderMappers(
@@ -254,11 +283,16 @@ export async function main() {
   await putRealmSettings(token, KEYCLOAK_ADMIN_URL);
 
   //****** Create identity providers if no exist
-  await createIdentityProviderWithMappers(token, KEYCLOAK_ADMIN_URL, "bcsc");
+  await createIdentityProviderWithMappers(token, KEYCLOAK_ADMIN_URL, BCSC);
   await createIdentityProviderWithMappers(
     token,
     KEYCLOAK_ADMIN_URL,
-    "bceidbasic"
+    BCEID_BASIC
+  );
+  await createIdentityProviderWithMappers(
+    token,
+    KEYCLOAK_ADMIN_URL,
+    BCEID_BUSINESS
   );
 }
 
