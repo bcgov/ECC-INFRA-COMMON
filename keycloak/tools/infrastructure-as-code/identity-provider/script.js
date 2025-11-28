@@ -10,12 +10,17 @@ import {
   getBCEIDBusinessIdentityProviderMap,
   getBCEIDBusinessMappers,
 } from "./mappers/IdentityProviderBCEIDBusinessMapper.js";
+import {
+  getIDIRIdentityProviderMap,
+  getIDIRMappers,
+} from "./mappers/IdentityProviderIDIRMapper.js";
 
 //constants for identity provider names we can adjust these to test creating new identity providers ex bceidbusiness -> bceidbusinesstesting
 //make sure to also change the alias constant in the mapper to match as well.
 const BCSC = "bcsc";
 const BCEID_BASIC = "bceidbasic";
 const BCEID_BUSINESS = "bceidbusiness";
+const IDIR = "idir";
 
 //************************ */
 // Helper Functions
@@ -32,6 +37,8 @@ function getAndValidateEnvVars() {
     KC_BCSC_SECRET: process.env.KC_BCSC_SECRET,
     KC_BCEID_BUSINESS_CLIENT_ID: process.env.KC_BCEID_BUSINESS_CLIENT_ID,
     KC_BCEID_BUSINESS_SECRET: process.env.KC_BCEID_BUSINESS_SECRET,
+    KC_IDIR_CLIENT_ID: process.env.KC_IDIR_CLIENT_ID,
+    KC_IDIR_SECRET: process.env.KC_IDIR_SECRET,
   };
 
   let valid = true;
@@ -145,6 +152,21 @@ const createIdentityProvider = async (
         )
       ),
     });
+  } else if (identityProviderName === IDIR) {
+    await fetch(`${kcAdminUrl}/identity-provider/instances`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(
+        getIDIRIdentityProviderMap(
+          process.env.KC_ENVIRONMENT,
+          process.env.KC_IDIR_CLIENT_ID,
+          process.env.KC_IDIR_SECRET
+        )
+      ),
+    });
   } else {
     throw new Error(
       `Identity provider ${identityProviderName} is not supported.`
@@ -200,7 +222,7 @@ const createIdentityProviderWithMappers = async (
   kcAdminUrl,
   identityProviderName
 ) => {
-  if (![BCEID_BASIC, BCSC, BCEID_BUSINESS].includes(identityProviderName)) {
+  if (![BCEID_BASIC, BCSC, BCEID_BUSINESS, IDIR].includes(identityProviderName)) {
     throw new Error(
       `Identity provider ${identityProviderName} is not supported.`
     );
@@ -225,6 +247,8 @@ const createIdentityProviderWithMappers = async (
     identityProviderMappers = getBCSCMappers();
   } else if (identityProviderName === BCEID_BUSINESS) {
     identityProviderMappers = getBCEIDBusinessMappers();
+  } else if (identityProviderName === IDIR) {
+    identityProviderMappers = getIDIRMappers();
   }
 
   await postIdentityProviderMappers(
@@ -293,6 +317,11 @@ export async function main() {
     token,
     KEYCLOAK_ADMIN_URL,
     BCEID_BUSINESS
+  );
+  await createIdentityProviderWithMappers(
+    token,
+    KEYCLOAK_ADMIN_URL,
+    IDIR
   );
 }
 
