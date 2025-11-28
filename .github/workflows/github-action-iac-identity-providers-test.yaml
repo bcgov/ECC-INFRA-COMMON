@@ -17,6 +17,8 @@ jobs:
           KC_CLIENT_SECRET: ${{ secrets.KC_CLIENT_SECRET }}
           KC_BASIC_BCEID_CLIENT_ID: ${{ secrets.KC_BASIC_BCEID_CLIENT_ID }}
           KC_BASIC_BCEID_SECRET: ${{ secrets.KC_BASIC_BCEID_SECRET }}
+          KC_BCEID_BUSINESS_CLIENT_ID: ${{ secrets.KC_BCEID_BUSINESS_CLIENT_ID }}
+          KC_BCEID_BUSINESS_SECRET: ${{ secrets.KC_BCEID_BUSINESS_SECRET }}
           KC_BCSC_CLIENT_ID: ${{ secrets.KC_BCSC_CLIENT_ID }}
           KC_BCSC_SECRET: ${{ secrets.KC_BCSC_SECRET }}
           KC_IDIR_CLIENT_ID: ${{ secrets.KC_IDIR_CLIENT_ID }}
