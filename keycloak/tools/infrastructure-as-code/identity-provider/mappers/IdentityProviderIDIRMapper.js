@@ -67,7 +67,7 @@ function getIDIRMappers() {
       identityProviderMapper: "oidc-user-attribute-idp-mapper",
       config: {
         syncMode: "INHERIT",
-        claim: "bceid_user_guid",
+        claim: "idir_user_guid",
         "user.attribute": "guid",
       },
     },
