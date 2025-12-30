@@ -111,6 +111,16 @@ function getBCEIDBusinessMappers() {
       },
     },
     {
+      name: "bceid_business_name",
+      identityProviderAlias: "bceidbusiness",
+      identityProviderMapper: "oidc-user-attribute-idp-mapper",
+      config: {
+        syncMode: "INHERIT",
+        claim: "bceid_business_name",
+        "user.attribute": "bceid_business_name",
+      },
+    },
+    {
       name: "display_name",
       identityProviderAlias: BCEID_BUSINESS_ALIAS,
       identityProviderMapper: "oidc-user-attribute-idp-mapper",
