@@ -10,7 +10,7 @@ const BCEID_BUSINESS_ALIAS = "bceidbusiness"; //change this if you want to test 
 function getBCEIDBusinessIdentityProviderMap(
   kcEnvironment,
   clientId,
-  clientSecret
+  clientSecret,
 ) {
   if (!clientId || !clientSecret) {
     throw new Error("Client ID and Client Secret are required.");
@@ -88,6 +88,7 @@ function getBCEIDBusinessMappers() {
       config: {
         syncMode: "INHERIT",
         claim: "bceid_business_guid",
+        "user.attribute": "bceid_business_guid",
       },
     },
     {
