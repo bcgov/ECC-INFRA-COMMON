@@ -9,7 +9,7 @@ jobs:
       - name: check out repository
         uses: actions/checkout@v6
       - name: run script
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         env:
           KC_REALM_ID: "${{ secrets.KC_REALM_ID }}"
           KC_ENVIRONMENT: "prod"
